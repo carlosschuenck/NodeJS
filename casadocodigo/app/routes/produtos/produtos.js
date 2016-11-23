@@ -1,6 +1,6 @@
 module.exports = function(app) {
 
-    var listar = function(request, response,next) {
+    var listar = function(request, response, next) {
         var connection = app.infra.connectionFactory();
         var produtosDao = new app.infra.ProdutosDAO(connection);
 
@@ -24,6 +24,22 @@ module.exports = function(app) {
 
     app.get('/produtos', listar);
 
+
+
+    app.delete('/produtos/:id', function (req, res) {
+        var id = req.params.id;
+        var connection = app.infra.connectionFactory();
+        var produtosDao = new app.infra.ProdutosDAO(connection);
+
+        produtosDao.excluir(id, function (erro, result) {
+            if(erro){
+                return next(erro);
+            }
+            res.redirect("/produtos");
+        });
+    });
+
+
     app.get('/produtos/form', function(request, response) {
         response.render("produtos/form", {
             erros: {},
@@ -31,10 +47,6 @@ module.exports = function(app) {
         });
     });
 
-    app.delete('/produtos', function (req, res) {
-        console.log("DELETANDOOOOOOOOOOOOOOOOOOOO");
-        res.send('DELETE request to homepage');
-    });
     app.post('/produtos', function(request, response) {
         var produto = request.body;
         request.assert('titulo', 'O título é obrigatório!').notEmpty();

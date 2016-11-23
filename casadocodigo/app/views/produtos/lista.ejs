@@ -1,6 +1,17 @@
+<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8"/>
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <script src="/js/jquery-3.1.0.js"></script>
+    <script>
+        function excluir (id) {
+            $.ajax({
+                url: "/produtos/"+id,
+                type: 'DELETE'
+            });
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -30,12 +41,10 @@
                 </a>
             </td>
             <td>
-                <form action="/produtos" method="PUT">
+                <form action="/produtos" onsubmit="excluir(<%= lista[i].id %>);">
                     <button type="submit">
-                        <img src="/img/excluir.png" width="20px;" height="20px;" onsubmit="c" >
-
+                        <img src="/img/excluir.png" width="20px;" height="20px;">
                     </button>
-                    <input class="btn btn-primary" type="submit" value="Salvar"/>
                 </form>
             </td>
 
