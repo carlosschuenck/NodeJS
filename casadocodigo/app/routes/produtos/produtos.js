@@ -24,8 +24,6 @@ module.exports = function(app) {
 
     app.get('/produtos', listar);
 
-
-
     app.delete('/produtos/:id', function (req, res) {
         var id = req.params.id;
         var connection = app.infra.connectionFactory();
@@ -35,8 +33,9 @@ module.exports = function(app) {
             if(erro){
                 return next(erro);
             }
-            res.redirect("/produtos");
+            res.render("/produtos");
         });
+        connection.end();
     });
 
 
@@ -80,5 +79,6 @@ module.exports = function(app) {
             console.log(erro);
             response.redirect('/produtos');
         });
+        connection.end();
     });
 }

@@ -19,5 +19,18 @@ module.exports = function(){
   load('routes', {cwd:'app'}) //cwd indica apartir de qual pasta o scan vai começar a ser feito "app/*"
   .then('infra')
   .into(app);//jogaa as configurações para dentro da variavel app
+
+  app.use(function(req, res, next){
+    res.status(404).render('erros/404');
+    next();
+  });
+  app.use(function(erros, req, res, next){
+    console.log(process.env.NODE_ENV);
+    if (!process.env.NODE_ENV) {
+      res.status(500).render('erros/500');
+      return
+    }
+    next(erros);
+  });
   return app;
 }
